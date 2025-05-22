@@ -10,7 +10,7 @@ def getliveTemp(latitude, longitude):
     """
     try:
         # Get API key from environment variables
-        WEATHER_API_KEY = os.getenv("WEATHER_API_KEY")
+        WEATHER_API_KEY = "2a325d7d2c2e46dcaaf92754252105"
         if not WEATHER_API_KEY:
             return {"error": "API key not found in environment variables"}
 
