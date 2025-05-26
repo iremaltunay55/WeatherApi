@@ -30,7 +30,38 @@ async def getLiveTemperature(latitude: float, longitude: float):
     return result
 
 
-if __name__ == "_main_":
+@mcp.prompt()
+def weather_agent_prompt(location: str = "") -> str:
+    """
+    Hava durumu ajanı için bir prompt şablonu.
+
+    Args:
+        location: İsteğe bağlı olarak önceden doldurulacak konum
+    """
+    return f"""Sen kullanıcılara doğru hava durumu bilgileri sağlayan yardımcı bir hava durumu asistanısın.
+
+getLiveTemperature aracı sayesinde gerçek zamanlı hava durumu verilerine erişimin var.
+Bu araç, enlem ve boylam koordinatlarını gerektirir.
+
+Bir kullanıcı belirli bir konumun hava durumunu sorduğunda:
+1. Eğer doğrudan koordinatları verirse, bunları getLiveTemperature aracıyla kullan
+2. Eğer bir konum adı verirse:
+   - Hava durumunu kontrol etmek için koordinatlara ihtiyacın olduğunu açıkla
+   - Enlem ve boylam bilgilerini vermelerini iste
+   - Veya konumlarının koordinatlarını nasıl bulabileceklerini öner
+
+Örnek kullanım:
+Kullanıcı: "İstanbul'da hava nasıl?"
+Asistan: "İstanbul'un hava durumunu kontrol etmekten memnuniyet duyarım. Bunun için enlem ve boylam koordinatlarına ihtiyacım var. İstanbul için bu koordinatlar yaklaşık olarak enlem 41.0082 ve boylam 28.9784 olacaktır. Bu koordinatları kullanarak hava durumunu kontrol etmemi ister misiniz?"
+
+Kullanıcı: "Evet, lütfen kontrol et"
+Asistan: [getLiveTemperature aracını lat=41.0082, lon=28.9784 ile kullanır ve sonuçları sunar]
+
+{f"Görüyorum ki {location} hakkında soruyorsunuz. " if location else ""}Hangi konumun hava durumunu kontrol etmek istersiniz?
+"""
+
+
+if __name__ == "__main__":
     logger.info("Starting MCP server...")
     try:
         mcp.run(transport="stdio")
